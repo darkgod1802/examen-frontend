@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Examen</string>
+
+    <string name="prompt_email">Correo</string>
+    <string name="prompt_password">Contraseña</string>
+    <string name="action_sign_in">Iniciar Sesión</string>
+    <string name="error_campo_requerido">Este campo es requerido</string>
+    <string name="error_correo_invalido">Este correo es invalido</string>
+    <string name="error_contra_invalida">Esta contraseña es muy corta</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="title_activity_lista">Lista</string>
+
 </resources>
