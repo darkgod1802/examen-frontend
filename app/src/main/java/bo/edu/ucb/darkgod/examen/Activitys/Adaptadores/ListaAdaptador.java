@@ -1,4 +1,4 @@
-package bo.edu.ucb.darkgod.examen;
+package bo.edu.ucb.darkgod.examen.Activitys.Adaptadores;
 
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
@@ -13,17 +13,15 @@ import org.ocpsoft.prettytime.PrettyTime;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 import bo.edu.ucb.darkgod.examen.Modelos.Anuncio;
+import bo.edu.ucb.darkgod.examen.R;
 
-public class AdaptadorLista extends RecyclerView.Adapter<AdaptadorLista.ListaViewHolder> {
+public class ListaAdaptador extends RecyclerView.Adapter<ListaAdaptador.ListaViewHolder> {
 
     private static final int SECOND_MILLIS = 1000;
     private static final int MINUTE_MILLIS = 60 * SECOND_MILLIS;
@@ -38,7 +36,7 @@ public class AdaptadorLista extends RecyclerView.Adapter<AdaptadorLista.ListaVie
 
     private List<Anuncio> anuncios;
     private static final String TXT_FECHA_EVENTO="Fecha del evento: ";
-    public AdaptadorLista(List<Anuncio> anuncios){
+    public ListaAdaptador(List<Anuncio> anuncios){
         this.anuncios = anuncios;
     }
 

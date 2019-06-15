@@ -1,4 +1,4 @@
-package bo.edu.ucb.darkgod.examen;
+package bo.edu.ucb.darkgod.examen.Activitys;
 
 import android.content.Intent;
 import android.support.design.widget.TextInputLayout;
@@ -9,7 +9,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class InicioSesion extends AppCompatActivity {
+import bo.edu.ucb.darkgod.examen.R;
+
+public class InicioSesionActivity extends AppCompatActivity {
 
     // Referencias UI
     private EditText inCorreo, inContra;
@@ -32,8 +34,8 @@ public class InicioSesion extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 validarFormulario();
-                Intent intent = new Intent (v.getContext(), Lista.class);
-                startActivityForResult(intent, 0);
+                Intent intent = new Intent (v.getContext(), ListaActivity.class);
+                startActivity(intent);
             }
         });
 

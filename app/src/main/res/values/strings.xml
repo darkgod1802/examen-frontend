@@ -20,6 +20,7 @@
     <string name="siguiente">Siguiente</string>
     <string name="icono_ordenar_descripcion">Ordenar</string>
     <string name="paginacion">Página 1 de 5</string>
+    <string name="buscar">Buscar</string>
 
     <!--Item-->
     <string name="inicial">T</string>
