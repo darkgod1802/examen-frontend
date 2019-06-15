@@ -1,5 +1,6 @@
 package bo.edu.ucb.darkgod.examen;
 
+import android.content.Intent;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -31,6 +32,8 @@ public class InicioSesion extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 validarFormulario();
+                Intent intent = new Intent (v.getContext(), Lista.class);
+                startActivityForResult(intent, 0);
             }
         });
 

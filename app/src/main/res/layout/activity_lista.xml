@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:fitsSystemWindows="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Lista">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorFondoSuave"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/item_vertical_margin"
+                android:layout_marginBottom="@dimen/item_vertical_margin"
+                android:layout_marginLeft="@dimen/item_horizontal_margin"
+                android:layout_marginStart="@dimen/item_horizontal_margin"
+                android:text="@string/ordenar"/>
+            <Spinner
+                android:id="@+id/spTipo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginTop="@dimen/item_vertical_margin"
+                android:layout_marginBottom="@dimen/item_vertical_margin"
+                android:textSize="12sp"
+                android:entries="@array/country_arrays"
+                android:theme="@style/Spinner"/>
+
+            <ImageButton
+                android:id="@+id/imgOrdenar"
+                android:layout_width="@dimen/icono_ordenar"
+                android:layout_height="@dimen/icono_ordenar"
+                android:layout_marginTop="@dimen/item_vertical_margin"
+                android:layout_marginBottom="@dimen/item_vertical_margin"
+                android:layout_marginEnd="@dimen/item_horizontal_margin"
+                android:layout_marginRight="@dimen/item_horizontal_margin"
+                android:background="@drawable/orden_descendente"
+                android:contentDescription="@string/icono_ordenar_descripcion" />
+
+        </LinearLayout>
+
+        <android.support.design.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:paddingLeft="@dimen/lista_horizontal_margin"
+            android:paddingRight="@dimen/lista_horizontal_margin"
+            android:layout_weight="1">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:scrollbars="vertical"
+                tools:listitem="@layout/elemento_lista"
+                tools:visibility="visible" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/agregar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="@dimen/fab_margin"
+                app:backgroundTint="@color/colorPrimaryDark"
+                app:fabSize="normal"
+                app:srcCompat="@drawable/icono_add"
+                tools:ignore="VectorDrawableCompat"/>
+
+        </android.support.design.widget.CoordinatorLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorFondoSuave"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/btnAtras"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/item_vertical_margin"
+                android:layout_marginBottom="@dimen/item_vertical_margin"
+                android:layout_weight="1"
+                android:text="@string/anterior"
+                android:textAlignment="center"
+                android:clickable="true"
+                android:focusable="true"/>
+            <TextView
+                android:id="@+id/tvPagina"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/item_vertical_margin"
+                android:layout_marginBottom="@dimen/item_vertical_margin"
+                android:layout_weight="1"
+                android:text="@string/paginacion"
+                android:textAlignment="center"/>
+            <TextView
+                android:id="@+id/btnAdelante"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/item_vertical_margin"
+                android:layout_marginBottom="@dimen/item_vertical_margin"
+                android:layout_weight="1"
+                android:text="@string/siguiente"
+                android:textAlignment="center"
+                android:clickable="true"
+                android:focusable="true"/>
+        </LinearLayout>
+
+</LinearLayout>
