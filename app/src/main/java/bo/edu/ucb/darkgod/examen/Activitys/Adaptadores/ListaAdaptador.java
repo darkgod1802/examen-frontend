@@ -1,5 +1,6 @@
 package bo.edu.ucb.darkgod.examen.Activitys.Adaptadores;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.NonNull;
@@ -23,23 +24,18 @@ import bo.edu.ucb.darkgod.examen.R;
 
 public class ListaAdaptador extends RecyclerView.Adapter<ListaAdaptador.ListaViewHolder> {
 
-    private static final int SECOND_MILLIS = 1000;
-    private static final int MINUTE_MILLIS = 60 * SECOND_MILLIS;
-    private static final int HOUR_MILLIS = 60 * MINUTE_MILLIS;
-    private static final int DAY_MILLIS = 24 * HOUR_MILLIS;
-    private static final int MOUNTH_MILLIS = 30 * HOUR_MILLIS;
-
-    Date inputDate;
-    Date outputDate;
-    String formattedDateString;
-    String prettyTimeString;
-
+    private Date inputDate;
+    private Date outputDate;
+    private String formattedDateString;
+    private String prettyTimeString;
+    private Context context;
     private List<Anuncio> anuncios;
+
     private static final String TXT_FECHA_EVENTO="Fecha del evento: ";
-    public ListaAdaptador(List<Anuncio> anuncios){
+    public ListaAdaptador(Context context, List<Anuncio> anuncios){
+        this.context = context;
         this.anuncios = anuncios;
     }
-
     @NonNull
     @Override
     public ListaViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
@@ -54,11 +50,8 @@ public class ListaAdaptador extends RecyclerView.Adapter<ListaAdaptador.ListaVie
         listaViewHolder.tvTitulo.setText(anuncio.getTitulo());
         listaViewHolder.tvDescripcion.setText(anuncio.getDescripcion());
         listaViewHolder.tvFechaEvento.setText(fechaEvento);
-        listaViewHolder.tvIcon.setText(anuncios.get(position).getTitulo().substring(0, 1));
+        listaViewHolder.tvIcon.setText(anuncios.get(position).getTitulo().substring(0, 1).toUpperCase());
         listaViewHolder.tvFechaPublicacion.setText(toDuration(anuncio.getCreated_at()));
-        Random rnd = new Random();
-        int color = Color.argb(255, rnd.nextInt(256),rnd.nextInt(256), rnd.nextInt(256));
-        ((GradientDrawable) listaViewHolder.tvIcon.getBackground()).setColor(color);
     }
 
     @Override
@@ -81,6 +74,10 @@ public class ListaAdaptador extends RecyclerView.Adapter<ListaAdaptador.ListaVie
             tvIcon=itemView.findViewById(R.id.tvIcon);
             tvFechaPublicacion=itemView.findViewById(R.id.fecha);
         }
+    }
+    public void actualizar(List<Anuncio> anunciosNuevos){
+        anuncios=anunciosNuevos;
+        notifyDataSetChanged();
     }
     private String toDuration(String fecha) {
         SimpleDateFormat newDateFormat = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss",new Locale("ES"));

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,18 +19,20 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
-
+import java.util.ArrayList;
 import java.util.List;
 
 import bo.edu.ucb.darkgod.examen.Activitys.Adaptadores.ListaAdaptador;
 import bo.edu.ucb.darkgod.examen.Modelos.Anuncio;
 import bo.edu.ucb.darkgod.examen.R;
-import bo.edu.ucb.darkgod.examen.Servicios.UsuarioServicios;
+import bo.edu.ucb.darkgod.examen.Servicios.ListaServicio;
 
 public class ListaActivity extends AppCompatActivity{
     private String clave;
     private String tipo;
-    private Boolean orden;
+    private String orden;
+    private int total_paginas;
+    private int pagina_actual;
 
     // Referencias UI
     private RecyclerView rvLista;
@@ -38,7 +41,7 @@ public class ListaActivity extends AppCompatActivity{
     private TextView btnAtras,btnAdelante, tvPagina;
     private ImageButton imgOrden;
     private List<Anuncio> lista;
-    private UsuarioServicios servicios;
+    private ListaServicio servicios;
     private SearchView searchView;
 
     private ListaAdaptador adaptadorLista;
@@ -48,10 +51,12 @@ public class ListaActivity extends AppCompatActivity{
         setContentView(R.layout.activity_lista);
         //Inicializando valores
         clave="";
-        tipo="";
-        orden=false;
-        servicios=new UsuarioServicios();
+        tipo="id";
+        orden="desc";
+        pagina_actual=1;
 
+        servicios=new ListaServicio(this);
+        lista = new ArrayList<>();
         //Relacionando variable con UI
         rvLista =findViewById(R.id.recycler_view);
         btnAdd=findViewById(R.id.agregar);
@@ -61,12 +66,30 @@ public class ListaActivity extends AppCompatActivity{
         tvPagina=findViewById(R.id.tvPagina);
         spTipo=findViewById(R.id.spTipo);
 
+        adaptadorLista=new ListaAdaptador(this, lista);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        rvLista.setLayoutManager(mLayoutManager);
+        rvLista.setItemAnimator(new DefaultItemAnimator());
+        rvLista.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        rvLista.setAdapter(adaptadorLista);
+
         //Acciones
         spTipo.setOnItemSelectedListener(new OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                tipo = parent.getItemAtPosition(position).toString();
-                crearLista();
+                switch (position){
+                    case 0:
+                        tipo="id";
+                        break;
+                    case 1:
+                        tipo="fecha";
+                        break;
+                    default:
+                        tipo="titulo";
+                        break;
+                }
+                pagina_actual=1;
+                actualizar();
                 Log.i("ListaActivity", position+","+tipo);
             }
             @Override
@@ -84,20 +107,36 @@ public class ListaActivity extends AppCompatActivity{
         imgOrden.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(orden){
+                if(orden.equals("asc")){
                     imgOrden.setBackgroundResource(R.drawable.orden_descendente);
-                    orden=false;
+                    orden="desc";
                 }else{
                     imgOrden.setBackgroundResource(R.drawable.orden_ascendente);
-                    orden=true;
+                    orden="asc";
                 }
-                crearLista();
                 Log.i("ListaActivity", orden+"false es des");
+                actualizar();
             }
         });
-        configurarLista();
-        crearLista();
+
+        btnAdelante.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pagina_actual=pagina_actual+1;
+                actualizar();
+            }
+        });
+
+        btnAtras.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pagina_actual=pagina_actual-1;
+                actualizar();
+            }
+        });
+        actualizar();
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -112,12 +151,16 @@ public class ListaActivity extends AppCompatActivity{
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                crearLista();
+                clave=query;
+                actualizar();
                 return false;
             }
             @Override
             public boolean onQueryTextChange(String query) {
-                crearLista();
+                if(query.isEmpty()){
+                    clave=query;
+                    actualizar();
+                }
                 return false;
             }
         });
@@ -132,17 +175,7 @@ public class ListaActivity extends AppCompatActivity{
         }
         return super.onOptionsItemSelected(item);
     }
-    private void crearLista(){
-        lista=servicios.obtenerAnuncios(clave,tipo,orden);
-        adaptadorLista = new ListaAdaptador(lista);
-        rvLista.setAdapter(adaptadorLista);
-    }
-    private void configurarLista(){
-        //Añadiendo divisores a la lista
-        LinearLayoutManager lim = new LinearLayoutManager(this,
-                LinearLayoutManager.VERTICAL, false);
-        rvLista.addItemDecoration(new DividerItemDecoration(this,
-                DividerItemDecoration.VERTICAL));
-        rvLista.setLayoutManager(lim);
+    private void actualizar(){
+        servicios.obtenerAnuncios(pagina_actual,clave,tipo,orden,adaptadorLista,btnAtras,btnAdelante,tvPagina);
     }
 }
