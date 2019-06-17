@@ -25,10 +25,22 @@
     <!--Item-->
     <string name="inicial">T</string>
     <string name="titulo">Título: </string>
-    <string name="descripcion">Descripción del evento: </string>
+    <string name="descripcion">Descripción: </string>
     <string name="fecha_publicacion">Fecha de la publicación: </string>
     <string name="fecha_evento">Fecha del evento: </string>
 
+    <!--Publicar anuncio-->
+    <string name="titulo_anuncio">Publicar Anuncio</string>
+    <string name="fecha">Fecha</string>
+    <string name="hora">Hora</string>
+    <string name="publicar">Publicar Anuncio</string>
+    <string name="error_fecha_formato_invalido">Formato erróneo DD/MM/AA</string>
+    <string name="error_hora_formato_invalido">Formato erróneo HH:MM</string>
 
-
+    <!--Detalle anuncio-->
+    <string name="autor">Autor Publicación</string>
+    <string name="correo">Correo Autor</string>
+    <string name="creacion">Fecha de Publicación</string>
+    <string name="editar">Editar</string>
+    <string name="eliminar">Eliminar</string>
 </resources>

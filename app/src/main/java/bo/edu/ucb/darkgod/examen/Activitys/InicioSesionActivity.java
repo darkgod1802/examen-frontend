@@ -36,6 +36,7 @@ public class InicioSesionActivity extends AppCompatActivity {
                 validarFormulario();
                 Intent intent = new Intent (v.getContext(), ListaActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -48,11 +49,10 @@ public class InicioSesionActivity extends AppCompatActivity {
         if(inLayoutCorreo.isErrorEnabled()|| inLayoutContra.isErrorEnabled()){
             return;
         }
-        Log.i("Form login","Datos correctos");
+        Log.i("Inicio Sesion","Datos correctos");
     }
     private void validarCorreo(String correo){
         if(correo.trim().isEmpty()){
-            Log.i("Form login","correo: "+correo);
             inLayoutCorreo.setError(getString(R.string.error_campo_requerido));
         }else{
             if(!correo.contains("@"))

@@ -6,25 +6,45 @@ public class Anuncio {
     private String descripcion;
     private String fecha;
     private String hora;
-    private int usuario_id;
     private String created_at;
+    private String nombres;
+    private String apellidos;
+    private String correo;
 
-    public Anuncio(int id, String titulo, String descripcion, String fecha, String hora, int usuario_id, String created_at) {
+    public Anuncio(int id, String titulo, String descripcion, String fecha, String created_at) {
+        this.id = id;
+        this.titulo = titulo;
+        this.descripcion = descripcion;
+        this.fecha = fecha;
+        this.hora = "";
+        this.created_at = created_at;
+        this.nombres="";
+        this.apellidos="";
+        this.correo="";
+    }
+
+    public Anuncio(int id, String titulo, String descripcion, String fecha, String hora,
+                   String created_at, String nombres, String apellidos, String correo) {
         this.id = id;
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.fecha = fecha;
         this.hora = hora;
-        this.usuario_id = usuario_id;
         this.created_at = created_at;
+        this.nombres = nombres;
+        this.apellidos = apellidos;
+        this.correo = correo;
     }
-
-    public String getCreated_at() {
-        return created_at;
-    }
-
-    public void setCreated_at(String created_at) {
-        this.created_at = created_at;
+    public Anuncio() {
+        this.id = 0;
+        this.titulo = "";
+        this.descripcion = "";
+        this.fecha = "";
+        this.hora = "";
+        this.created_at = "";
+        this.nombres="";
+        this.apellidos="";
+        this.correo="";
     }
 
     public int getId() {
@@ -67,11 +87,35 @@ public class Anuncio {
         this.hora = hora;
     }
 
-    public int getUsuario_id() {
-        return usuario_id;
+    public String getCreated_at() {
+        return created_at;
     }
 
-    public void setUsuario_id(int usuario_id) {
-        this.usuario_id = usuario_id;
+    public void setCreated_at(String created_at) {
+        this.created_at = created_at;
+    }
+
+    public String getNombres() {
+        return nombres;
+    }
+
+    public void setNombres(String nombres) {
+        this.nombres = nombres;
+    }
+
+    public String getApellidos() {
+        return apellidos;
+    }
+
+    public void setApellidos(String apellidos) {
+        this.apellidos = apellidos;
+    }
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
     }
 }
