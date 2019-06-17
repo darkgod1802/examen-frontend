@@ -1,10 +1,10 @@
 package bo.edu.ucb.darkgod.examen.Activitys.Adaptadores;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +17,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Random;
 
+import bo.edu.ucb.darkgod.examen.Activitys.DetalleAnuncioActivity;
 import bo.edu.ucb.darkgod.examen.Modelos.Anuncio;
 import bo.edu.ucb.darkgod.examen.R;
 
@@ -73,6 +73,18 @@ public class ListaAdaptador extends RecyclerView.Adapter<ListaAdaptador.ListaVie
             tvFechaEvento=itemView.findViewById(R.id.fecha_evento);
             tvIcon=itemView.findViewById(R.id.tvIcon);
             tvFechaPublicacion=itemView.findViewById(R.id.fecha);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.i("ListaAdaptador","entre");
+                    Context context = v.getContext();
+                    int position = getAdapterPosition();
+                    Anuncio anuncio = anuncios.get(position);
+                    Intent intent = new Intent(v.getContext(), DetalleAnuncioActivity.class);
+                    intent.putExtra("id",anuncio.getId());
+                    context.startActivity(intent);
+                }
+            });
         }
     }
     public void actualizar(List<Anuncio> anunciosNuevos){

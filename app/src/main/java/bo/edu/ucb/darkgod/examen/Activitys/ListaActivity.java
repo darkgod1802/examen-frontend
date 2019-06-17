@@ -2,9 +2,10 @@ package bo.edu.ucb.darkgod.examen.Activitys;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,9 +17,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,11 +31,10 @@ import bo.edu.ucb.darkgod.examen.Modelos.Anuncio;
 import bo.edu.ucb.darkgod.examen.R;
 import bo.edu.ucb.darkgod.examen.Servicios.ListaServicio;
 
-public class ListaActivity extends AppCompatActivity{
+public class ListaActivity extends AppCompatActivity {
     private String clave;
     private String tipo;
     private String orden;
-    private int total_paginas;
     private int pagina_actual;
 
     // Referencias UI
@@ -45,6 +48,13 @@ public class ListaActivity extends AppCompatActivity{
     private SearchView searchView;
 
     private ListaAdaptador adaptadorLista;
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        servicios.obtenerAnuncios(pagina_actual,clave,tipo,orden,adaptadorLista,btnAtras,btnAdelante,tvPagina);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,7 +76,7 @@ public class ListaActivity extends AppCompatActivity{
         tvPagina=findViewById(R.id.tvPagina);
         spTipo=findViewById(R.id.spTipo);
 
-        adaptadorLista=new ListaAdaptador(this, lista);
+        adaptadorLista=new ListaAdaptador(this,lista);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         rvLista.setLayoutManager(mLayoutManager);
         rvLista.setItemAnimator(new DefaultItemAnimator());
@@ -89,7 +99,7 @@ public class ListaActivity extends AppCompatActivity{
                         break;
                 }
                 pagina_actual=1;
-                actualizar();
+                servicios.obtenerAnuncios(pagina_actual,clave,tipo,orden,adaptadorLista,btnAtras,btnAdelante,tvPagina);
                 Log.i("ListaActivity", position+","+tipo);
             }
             @Override
@@ -98,9 +108,12 @@ public class ListaActivity extends AppCompatActivity{
             }
         });
 
+
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent (v.getContext(), CrearAnuncioActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -115,7 +128,7 @@ public class ListaActivity extends AppCompatActivity{
                     orden="asc";
                 }
                 Log.i("ListaActivity", orden+"false es des");
-                actualizar();
+                servicios.obtenerAnuncios(pagina_actual,clave,tipo,orden,adaptadorLista,btnAtras,btnAdelante,tvPagina);
             }
         });
 
@@ -123,7 +136,7 @@ public class ListaActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 pagina_actual=pagina_actual+1;
-                actualizar();
+                servicios.obtenerAnuncios(pagina_actual,clave,tipo,orden,adaptadorLista,btnAtras,btnAdelante,tvPagina);
             }
         });
 
@@ -131,10 +144,10 @@ public class ListaActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 pagina_actual=pagina_actual-1;
-                actualizar();
+                servicios.obtenerAnuncios(pagina_actual,clave,tipo,orden,adaptadorLista,btnAtras,btnAdelante,tvPagina);
             }
         });
-        actualizar();
+        servicios.obtenerAnuncios(pagina_actual,clave,tipo,orden,adaptadorLista,btnAtras,btnAdelante,tvPagina);
     }
 
 
@@ -147,19 +160,20 @@ public class ListaActivity extends AppCompatActivity{
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setMaxWidth(Integer.MAX_VALUE);
 
+
         //Acciones del menu
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 clave=query;
-                actualizar();
+                servicios.obtenerAnuncios(pagina_actual,clave,tipo,orden,adaptadorLista,btnAtras,btnAdelante,tvPagina);
                 return false;
             }
             @Override
             public boolean onQueryTextChange(String query) {
                 if(query.isEmpty()){
                     clave=query;
-                    actualizar();
+                    servicios.obtenerAnuncios(pagina_actual,clave,tipo,orden,adaptadorLista,btnAtras,btnAdelante,tvPagina);
                 }
                 return false;
             }
@@ -173,9 +187,17 @@ public class ListaActivity extends AppCompatActivity{
         if (id == R.id.action_search) {
             return true;
         }
+        if (id == R.id.action_update) {
+            servicios.obtenerAnuncios(pagina_actual,clave,tipo,orden,adaptadorLista,btnAtras,btnAdelante,tvPagina);
+        }
+        if (id == R.id.action_logout) {
+            cerrarSesion();
+        }
         return super.onOptionsItemSelected(item);
     }
-    private void actualizar(){
-        servicios.obtenerAnuncios(pagina_actual,clave,tipo,orden,adaptadorLista,btnAtras,btnAdelante,tvPagina);
+    private void cerrarSesion(){
+        Intent intent = new Intent (this, InicioSesionActivity.class);
+        startActivity(intent);
+        finish();
     }
 }
