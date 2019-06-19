@@ -20,9 +20,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activitys.ListaActivity" />
+        <activity android:name=".Activitys.ListaAnunciosActivity" />
         <activity android:name=".Activitys.CrearAnuncioActivity" />
-        <activity android:name=".Activitys.DetalleAnuncioActivity"></activity>
+        <activity android:name=".Activitys.DetalleAnuncioActivity" />
+        <activity android:name=".Activitys.ModificarAnuncioActivity"></activity>
     </application>
 
 </manifest>

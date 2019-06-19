@@ -41,6 +41,9 @@
     <string name="autor">Autor Publicación</string>
     <string name="correo">Correo Autor</string>
     <string name="creacion">Fecha de Publicación</string>
-    <string name="editar">Editar</string>
+    <string name="editar">Modificar</string>
     <string name="eliminar">Eliminar</string>
+
+    <!--Modificar anuncio-->
+    <string name="modificar_anuncio">Modificar Anuncio</string>
 </resources>

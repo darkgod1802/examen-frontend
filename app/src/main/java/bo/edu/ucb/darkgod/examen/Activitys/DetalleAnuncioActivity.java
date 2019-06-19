@@ -1,5 +1,8 @@
 package bo.edu.ucb.darkgod.examen.Activitys;
 
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -7,18 +10,21 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import bo.edu.ucb.darkgod.examen.Modelos.Anuncio;
 import bo.edu.ucb.darkgod.examen.R;
 import bo.edu.ucb.darkgod.examen.Servicios.AnuncioServicio;
-import bo.edu.ucb.darkgod.examen.Servicios.ListaServicio;
 
 public class DetalleAnuncioActivity extends AppCompatActivity {
 
     private TextView tvTitulo,tvDescripcion,tvFecha,tvHora,tvAutor,tvCorreo,tvCreacion;
     private Button btnEditar,btnEliminar;
-    private ListaServicio servicio;
-    private AnuncioServicio anuncioServicio;
+    private AnuncioServicio servicio;
     private int id;
+    private TextView[] textViews;
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        servicio.obtenerDetalle(id,textViews);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +42,7 @@ public class DetalleAnuncioActivity extends AppCompatActivity {
         btnEditar=findViewById(R.id.btnEditar);
         btnEliminar=findViewById(R.id.btnEliminar);
 
-        TextView[] textViews=new TextView[7];
+        textViews=new TextView[7];
         textViews[0]=tvTitulo;
         textViews[1]=tvDescripcion;
         textViews[2]=tvFecha;
@@ -44,11 +50,17 @@ public class DetalleAnuncioActivity extends AppCompatActivity {
         textViews[4]=tvAutor;
         textViews[5]=tvCorreo;
         textViews[6]=tvCreacion;
-        servicio=new ListaServicio(this);
-        servicio.get(id,textViews);
+        servicio=new AnuncioServicio(this,this);
+        servicio.obtenerDetalle(id,textViews);
 
-        anuncioServicio=new AnuncioServicio(this);
-
+        btnEditar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), ModificarAnuncioActivity.class);
+                intent.putExtra("id",id);
+                startActivity(intent);
+            }
+        });
         btnEliminar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,6 +69,23 @@ public class DetalleAnuncioActivity extends AppCompatActivity {
         });
     }
     private void eliminar(){
-        anuncioServicio.elimnar(id,this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("¿Esta seguro de eliminar esta publicación?")
+                .setMessage("Una vez eliminada no podra volver a acceder al contenido.")
+                .setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                servicio.elimnarAnuncio(id);
+                            }
+                        })
+                .setNegativeButton("Cancelar",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+        builder.show();
     }
 }

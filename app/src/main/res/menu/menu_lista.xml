@@ -11,8 +11,7 @@
     <item android:id="@+id/action_update"
         android:title="Actualizar"
         android:icon="@android:drawable/ic_popup_sync"
-        android:orderInCategory="100"
-        app:showAsAction="always"/>
+        android:orderInCategory="100"/>
 
     <item android:id="@+id/action_logout"
         android:title="Cerrar Sesion"

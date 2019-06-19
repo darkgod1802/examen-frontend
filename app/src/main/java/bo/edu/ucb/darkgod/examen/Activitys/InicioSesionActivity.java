@@ -1,6 +1,8 @@
 package bo.edu.ucb.darkgod.examen.Activitys;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import bo.edu.ucb.darkgod.examen.R;
+import bo.edu.ucb.darkgod.examen.Servicios.AnuncioServicio;
 
 public class InicioSesionActivity extends AppCompatActivity {
 
@@ -17,11 +20,19 @@ public class InicioSesionActivity extends AppCompatActivity {
     private EditText inCorreo, inContra;
     private TextInputLayout inLayoutCorreo, inLayoutContra;
     private Button iniciarSesion;
+    private AnuncioServicio servicio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inicio_sesion);
+        SharedPreferences preferences = getSharedPreferences("prefs", Context.MODE_PRIVATE);
+        String token=preferences.getString("token","error");
+        if(!token.equals("error")){
+            Intent intent = new Intent (this, ListaAnunciosActivity.class);
+            startActivity(intent);
+            finish();
+        }
 
         //Relacionando variable con UI
         inCorreo = findViewById(R.id.correo);
@@ -34,11 +45,12 @@ public class InicioSesionActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 validarFormulario();
-                Intent intent = new Intent (v.getContext(), ListaActivity.class);
-                startActivity(intent);
-                finish();
+//                Intent intent = new Intent (v.getContext(), ListaAnunciosActivity.class);
+//                startActivity(intent);
+//                finish();
             }
         });
+        servicio=new AnuncioServicio(this,this);
 
     }
     private void validarFormulario(){
@@ -50,6 +62,7 @@ public class InicioSesionActivity extends AppCompatActivity {
             return;
         }
         Log.i("Inicio Sesion","Datos correctos");
+        servicio.iniciarSesison(correo,contraseña);
     }
     private void validarCorreo(String correo){
         if(correo.trim().isEmpty()){

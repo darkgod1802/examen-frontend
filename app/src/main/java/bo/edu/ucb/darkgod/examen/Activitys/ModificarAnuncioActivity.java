@@ -4,9 +4,9 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -25,20 +25,21 @@ import bo.edu.ucb.darkgod.examen.Modelos.Anuncio;
 import bo.edu.ucb.darkgod.examen.R;
 import bo.edu.ucb.darkgod.examen.Servicios.AnuncioServicio;
 
-public class CrearAnuncioActivity extends AppCompatActivity {
+public class ModificarAnuncioActivity extends AppCompatActivity {
 
     private EditText etFecha,etHora,etTitulo,etDescripcion;
     private TextInputLayout etFechaLayout, etHoraLayout,etTituloLayout,etDescripcionLayout;
-    private Button btnPublicar;
+    private Button btnModificar;
     private AnuncioServicio servicio;
     private final Calendar c = Calendar.getInstance();
-
+    private int id;
+    private EditText[] editTexts;
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_crear_anuncio);
-
+        setContentView(R.layout.activity_modificar_anuncio);
+        id=getIntent().getIntExtra("id",id);
 
         //Relacionando variable con UI
         etFecha =findViewById(R.id.etFecha);
@@ -49,9 +50,15 @@ public class CrearAnuncioActivity extends AppCompatActivity {
         etHoraLayout=findViewById(R.id.etHora_layout);
         etTituloLayout=findViewById(R.id.etTitulo_layout);
         etDescripcionLayout=findViewById(R.id.etDescripcion_layout);
-        btnPublicar=findViewById(R.id.btnPublicar);
+        btnModificar=findViewById(R.id.btnModificar);
         servicio=new AnuncioServicio(this,this);
 
+        editTexts=new EditText[7];
+        editTexts[0]=etTitulo;
+        editTexts[1]=etDescripcion;
+        editTexts[2]=etFecha;
+        editTexts[3]=etHora;
+        servicio.obtener(id,editTexts);
 
         Drawable img;
         img = this.getResources().getDrawable(R.drawable.calendar);
@@ -74,7 +81,7 @@ public class CrearAnuncioActivity extends AppCompatActivity {
                 return onTime(etHora,event);
             }
         });
-        btnPublicar.setOnClickListener(new View.OnClickListener() {
+        btnModificar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 validarFormulario();
@@ -98,13 +105,14 @@ public class CrearAnuncioActivity extends AppCompatActivity {
         String mes=fecha.substring(3,5);
         String dia=fecha.substring(0,2);
         fecha=anio+"-"+mes+"-"+dia;
+        Log.i("Crear Publicacion","Datos correctos"+fecha);
         Anuncio anuncio=new Anuncio();
         anuncio.setTitulo(titulo);
         anuncio.setDescripcion(descripcion);
         anuncio.setFecha(fecha);
         anuncio.setHora(hora);
-        Log.i("Crear Publicacion","Datos correctos"+fecha);
-        servicio.crearAnuncio(anuncio);
+        Log.i("ModificarTAG",anuncio.getTitulo());
+        servicio.modificarAnuncio(id,anuncio,editTexts);
     }
     private boolean onDate(final View view, MotionEvent event) {
         // do something
